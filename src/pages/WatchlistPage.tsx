@@ -27,14 +27,14 @@ import {
 import Navbar from "../components/Navbar";
 import { useWatchlist } from "../hooks/useWatchlist";
 import { useDebouncedValue } from "../hooks/useDebouncedValue";
-import type { WatchlistItem } from "../types/movie";
+import type { WatchlistItem, SortOption } from "../types/movie";
 import { useNavigate } from "react-router-dom";
 
 const WatchlistPage = () => {
   const navigate = useNavigate();
   const { watchlist, loadWatchlist, updateWatchlistItem, toggleWatchlist } =
     useWatchlist();
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  // const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedValue(search, 300);
   const [typeFilter, setTypeFilter] = useState<
@@ -43,7 +43,7 @@ const WatchlistPage = () => {
   const [statusFilter, setStatusFilter] = useState<
     "all" | "watched" | "unwatched"
   >("all");
-  const [sortBy, setSortBy] = useState("dateAdded-desc");
+  const [sortBy, setSortBy] = useState<SortOption>("dateAdded-desc");
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
   const [hoverRating, setHoverRating] = useState<Record<string, number | null>>(
     {},
@@ -57,14 +57,21 @@ const WatchlistPage = () => {
     });
   };
 
+  const [sort, order] = sortBy.split("-") as [
+    "dateAdded" | "title" | "year" | "rating" | "myRating",
+    "asc" | "desc"
+  ];
+
+
   useEffect(() => {
     loadWatchlist({
       filter: typeFilter !== "all" ? typeFilter : undefined,
       watched: statusFilter === "all" ? undefined : statusFilter === "watched",
-      sort: sortBy.split("-")[0],
-      order: sortBy.split("-")[1] as "asc" | "desc",
+      sort,
+      order,
     });
   }, [typeFilter, statusFilter, sortBy]);
+
 
   const filteredWatchlist = useMemo(() => {
     if (!debouncedSearch) return watchlist;
@@ -341,94 +348,94 @@ const WatchlistPage = () => {
 
   /* ---------------- LIST VIEW ---------------- */
 
-  const renderListView = () => (
-    <Stack spacing={2}>
-      {filteredWatchlist.map((movie) => (
-        <Paper
-          key={movie.imdbId}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            p: 2,
-            borderRadius: 2,
-          }}
-        >
-          {/* Poster */}
-          <Box
-            sx={{
-              width: 60,
-              height: 90,
-              borderRadius: 1,
-              overflow: "hidden",
-              flexShrink: 0,
-            }}
-          >
-            {movie.poster ? (
-              <img
-                src={movie.poster}
-                alt={movie.title}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            ) : (
-              <Box
-                height="100%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Film size={24} />
-              </Box>
-            )}
-          </Box>
+  // const renderListView = () => (
+  //   <Stack spacing={2}>
+  //     {filteredWatchlist.map((movie) => (
+  //       <Paper
+  //         key={movie.imdbId}
+  //         sx={{
+  //           display: "flex",
+  //           alignItems: "center",
+  //           gap: 2,
+  //           p: 2,
+  //           borderRadius: 2,
+  //         }}
+  //       >
+  //         {/* Poster */}
+  //         <Box
+  //           sx={{
+  //             width: 60,
+  //             height: 90,
+  //             borderRadius: 1,
+  //             overflow: "hidden",
+  //             flexShrink: 0,
+  //           }}
+  //         >
+  //           {movie.poster ? (
+  //             <img
+  //               src={movie.poster}
+  //               alt={movie.title}
+  //               style={{
+  //                 width: "100%",
+  //                 height: "100%",
+  //                 objectFit: "cover",
+  //               }}
+  //             />
+  //           ) : (
+  //             <Box
+  //               height="100%"
+  //               display="flex"
+  //               alignItems="center"
+  //               justifyContent="center"
+  //             >
+  //               <Film size={24} />
+  //             </Box>
+  //           )}
+  //         </Box>
 
-          {/* Info */}
-          <Box flex={1} minWidth={0}>
-            <Typography fontWeight={600} noWrap>
-              {movie.title}
-            </Typography>
-            <Typography fontSize={13} color="text.secondary">
-              {movie.year} • {movie.type}
-            </Typography>
-          </Box>
+  //         {/* Info */}
+  //         <Box flex={1} minWidth={0}>
+  //           <Typography fontWeight={600} noWrap>
+  //             {movie.title}
+  //           </Typography>
+  //           <Typography fontSize={13} color="text.secondary">
+  //             {movie.year} • {movie.type}
+  //           </Typography>
+  //         </Box>
 
-          {/* Status */}
-          <Typography fontSize={12}>
-            {movie.watched ? "Watched" : "Unwatched"}
-          </Typography>
+  //         {/* Status */}
+  //         <Typography fontSize={12}>
+  //           {movie.watched ? "Watched" : "Unwatched"}
+  //         </Typography>
 
-          {/* Actions (always visible) */}
-          <Box display="flex" gap={1}>
-            <IconButton
-              size="small"
-              onClick={() => console.log("View info", movie.imdbId)}
-            >
-              <Info size={16} />
-            </IconButton>
+  //         {/* Actions (always visible) */}
+  //         <Box display="flex" gap={1}>
+  //           <IconButton
+  //             size="small"
+  //             onClick={() => console.log("View info", movie.imdbId)}
+  //           >
+  //             <Info size={16} />
+  //           </IconButton>
 
-            <IconButton
-              size="small"
-              onClick={() => console.log("Compare", movie.imdbId)}
-            >
-              <ArrowLeftRight size={16} />
-            </IconButton>
+  //           <IconButton
+  //             size="small"
+  //             onClick={() => console.log("Compare", movie.imdbId)}
+  //           >
+  //             <ArrowLeftRight size={16} />
+  //           </IconButton>
 
-            <IconButton
-              size="small"
-              color="error"
-              onClick={() => console.log("Delete", movie.imdbId)}
-            >
-              <Trash2 size={16} />
-            </IconButton>
-          </Box>
-        </Paper>
-      ))}
-    </Stack>
-  );
+  //           <IconButton
+  //             size="small"
+  //             color="error"
+  //             onClick={() => console.log("Delete", movie.imdbId)}
+  //           >
+  //             <Trash2 size={16} />
+  //           </IconButton>
+  //         </Box>
+  //       </Paper>
+  //     ))}
+  //   </Stack>
+  // );
 
   return (
     <Box minHeight="100vh" bgcolor="background.default">
@@ -635,7 +642,8 @@ const WatchlistPage = () => {
             </Select>{" "}
           </FormControl>{" "}
         </Box>
-        {viewMode === "grid" ? renderGridView() : renderListView()}
+        {/* {viewMode === "grid" ? renderGridView() : renderListView()} */}
+        {renderGridView()}
       </Box>
     </Box>
   );

@@ -84,12 +84,6 @@ const theme = createTheme({
         notchedOutline: {
           borderColor: 'rgba(255,255,255,0.1)',
         },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'rgba(255,255,255,0.25)',
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#E50914',
-        },
       },
     },
 

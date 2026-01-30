@@ -26,6 +26,7 @@ export interface MovieDetail extends SearchMovie {
   BoxOffice: string;
   Source: string;
   Rating: string;
+  Value: string;
 }
 
 export type WatchlistItem = {
@@ -49,3 +50,13 @@ export type WatchlistQuery = {
   sort?: 'dateAdded' | 'title' | 'year' | 'rating' | 'myRating';
   order?: 'asc' | 'desc';
 };
+
+export type SortOption =
+  | "dateAdded-desc"
+  | "dateAdded-asc"
+  | "title-asc"
+  | "title-desc"
+  | "year-desc"
+  | "year-asc"
+  | "rating-desc"
+  | "rating-asc";

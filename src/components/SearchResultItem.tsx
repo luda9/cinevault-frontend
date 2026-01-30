@@ -6,7 +6,7 @@ import { useWatchlist } from '../hooks/useWatchlist';
 
 interface SearchResultItemProps {
   movie: SearchMovie;
-  onOpenMovie: (id: string) => void;
+  onOpenMovie?: (id: string) => void;
 }
 
 const SearchResultItem = ({ movie, onOpenMovie }: SearchResultItemProps) => {
@@ -25,7 +25,7 @@ const SearchResultItem = ({ movie, onOpenMovie }: SearchResultItemProps) => {
       gap={2}
       p={1.5}
       borderRadius={1}
-      onClick={() => onOpenMovie(movie.imdbID)}
+      onClick={() => onOpenMovie?.(movie.imdbID)}
     >
       <div style={{display:'flex', gap:15}}>
 

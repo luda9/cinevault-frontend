@@ -45,7 +45,7 @@ import Navbar from "../components/Navbar";
 import { useComparison } from "../hooks/useComparison";
 import { useMoviePreviews } from "../hooks/useMoviePreviews";
 import SearchResultItem from "../components/SearchResultItem";
-import type { MovieDetail } from '../types/movie';
+import type { MovieDetail } from "../types/movie";
 
 const radarColors = ["#1976d2", "#9c27b0", "#2e7d32", "#ed6c02", "#6d4c41"];
 
@@ -115,24 +115,28 @@ const ComparePage = () => {
     rating: Number(movie.imdbRating),
   }));
 
-  const metascoreChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
-    name:
-      movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
-    fullName: movie.Title,
-    metascore:
-      movie.Metascore && movie.Metascore !== "N/A"
-        ? Number(movie.Metascore)
-        : 0,
-  }));
+  const metascoreChartData = (result?.movies ?? []).map(
+    (movie: MovieDetail) => ({
+      name:
+        movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
+      fullName: movie.Title,
+      metascore:
+        movie.Metascore && movie.Metascore !== "N/A"
+          ? Number(movie.Metascore)
+          : 0,
+    }),
+  );
 
-  const boxOfficeChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
-    name:
-      movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
-    fullName: movie.Title,
-    boxOffice: movie.BoxOffice
-      ? Number(movie.BoxOffice.replace(/[^0-9]/g, "")) / 1000000
-      : 0,
-  }));
+  const boxOfficeChartData = (result?.movies ?? []).map(
+    (movie: MovieDetail) => ({
+      name:
+        movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
+      fullName: movie.Title,
+      boxOffice: movie.BoxOffice
+        ? Number(movie.BoxOffice.replace(/[^0-9]/g, "")) / 1000000
+        : 0,
+    }),
+  );
 
   const runtimeChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
     name:
@@ -148,7 +152,10 @@ const ComparePage = () => {
         {
           metric: "IMDb Rating",
           ...Object.fromEntries(
-            result.movies.map((m: MovieDetail) => [m.imdbID, Number(m.imdbRating)]),
+            result.movies.map((m: MovieDetail) => [
+              m.imdbID,
+              Number(m.imdbRating),
+            ]),
           ),
         },
         {
@@ -710,7 +717,9 @@ const ComparePage = () => {
                           labelFormatter={(_, payload) =>
                             payload?.[0]?.payload?.fullName
                           }
-                          formatter={(value: number) => `$${value.toFixed(2)}M`}
+                          formatter={(value: number | undefined) =>
+                            value ? `$${value.toFixed(2)}M` : "N/A"
+                          }
                         />
                         <Legend />
                         <Bar
@@ -736,16 +745,18 @@ const ComparePage = () => {
                         <PolarGrid />
                         <PolarAngleAxis dataKey="metric" />
                         <PolarRadiusAxis domain={[0, 10]} />
-                        {result.movies.map((movie: MovieDetail, index: number) => (
-                          <Radar
-                            key={movie.imdbID}
-                            name={movie.Title}
-                            dataKey={movie.imdbID}
-                            stroke={radarColors[index]}
-                            fill={radarColors[index]}
-                            fillOpacity={0.35}
-                          />
-                        ))}
+                        {result.movies.map(
+                          (movie: MovieDetail, index: number) => (
+                            <Radar
+                              key={movie.imdbID}
+                              name={movie.Title}
+                              dataKey={movie.imdbID}
+                              stroke={radarColors[index]}
+                              fill={radarColors[index]}
+                              fillOpacity={0.35}
+                            />
+                          ),
+                        )}
                         <Legend />
                         <Tooltip />
                       </RadarChart>
