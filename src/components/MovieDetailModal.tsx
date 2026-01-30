@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Heart, Star, Film, ArrowLeftRight, X } from "lucide-react";
-import { Movie } from "../types/movie";
+import type { MovieDetail } from "../types/movie";
 import { useWatchlist } from "../hooks/useWatchlist";
 
 interface MovieDetailModalProps {
@@ -27,7 +27,7 @@ const MovieDetailModal = ({
   movieId,
 }: MovieDetailModalProps) => {
   const { toggleWatchlist, isInWatchlist, updateWatchlistItem, isWatched } = useWatchlist();
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const [movie, setMovie] = useState<MovieDetail | null>(null);
   const [loading, setLoading] = useState(false);
 
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -47,7 +47,7 @@ const MovieDetailModal = ({
   const inWatchlist = movie ? isInWatchlist(movie.imdbID) : false;
   const watched = movie ? isWatched(movie.imdbID) : false;
 
-  const getRating = (movie: Movie, source: string) =>
+  const getRating = (movie: MovieDetail, source: string) =>
     movie.Ratings?.find((r) => r.Source === source)?.Value;
 
   if (!open) return null;

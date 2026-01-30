@@ -1,25 +1,29 @@
-export interface Movie {
-  Poster: string;
-  Title: string;
-  Type: string;
-  Year: string;
+export interface SearchMovie {
   imdbID: string;
-  isInWatchList: boolean;
-  Director: string;
-  Plot: string;
-  Metascore: string;
-  imdbId: string;
+  Title: string;
+  Year: string;
+  Type: string;
+  Poster: string;
+  isInWatchlist?: boolean;
+}
+
+export interface MovieDetail extends SearchMovie {
   Rated: string;
+  Released: string;
   Runtime: string;
   Genre: string;
-  imdbRating: string;
+  Director: string;
   Writer: string;
   Actors: string;
+  Plot: string;
   Language: string;
   Country: string;
-  Released: string;
-  BoxOffice: string;
   Awards: string;
+  Poster: string;
+  Ratings?: { Source: string; Value: string }[];
+  Metascore: string;
+  imdbRating: string;
+  BoxOffice: string;
 }
 
 export type WatchlistItem = {
@@ -37,7 +41,7 @@ export type WatchlistItem = {
   runtime: string;
 };
 
-type WatchlistQuery = {
+export type WatchlistQuery = {
   filter?: 'movie' | 'series' | 'episode';
   watched?: boolean;
   sort?: 'dateAdded' | 'title' | 'year' | 'rating' | 'myRating';

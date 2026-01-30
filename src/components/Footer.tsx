@@ -8,7 +8,6 @@ const Footer = () => {
     mt: 8,
     py: 3,
     px: 2,
-    borderTop: "1px solid",
     borderColor: "divider",
     backgroundColor: 'rgba(11,11,13,0.8)',
     backdropFilter: 'blur(12px)',

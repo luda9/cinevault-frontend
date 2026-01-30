@@ -12,6 +12,8 @@ import heroBg from '../assets/hero-bg.jpg';
 import SearchResultItem from './SearchResultItem';
 import MovieDetailModal from './MovieDetailModal'
 
+import type { SearchMovie } from '../types/movie';
+
 const HeroSection = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -103,7 +105,7 @@ const HeroSection = () => {
         </Typography>
 
         {/* Autocomplete Search */}
-        <Autocomplete
+        <Autocomplete<SearchMovie>
           disableCloseOnSelect
           options={moviesTv}
           isOptionEqualToValue={(option, value) =>
@@ -128,7 +130,7 @@ const HeroSection = () => {
             return (
               <Box
                 component="li"
-                key={option.imdbID}
+                key={key}
                 {...rest}
               >
                 <SearchResultItem
@@ -175,7 +177,7 @@ const HeroSection = () => {
       <MovieDetailModal
         movieId={selectedMovieId}
         open={Boolean(selectedMovieId)}
-        onClose={() => setSelectedMovieId(null)}
+        onClose={() => setSelectedMovieId('')}
       />
     </Box>
   );

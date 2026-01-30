@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { WatchlistItem } from '../types/movie';
+import type { WatchlistItem, WatchlistQuery } from '../types/movie';
 
 type WatchlistContextType = {
   watchlist: WatchlistItem[];

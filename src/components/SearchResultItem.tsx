@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Heart, Film, Tv } from 'lucide-react';
 import { Box, Typography, Chip, IconButton } from '@mui/material';
-import { Movie } from '../types/movie';
+import type { MovieDetail } from '../types/movie';
 import { useWatchlist } from '../hooks/useWatchlist';
 
 interface SearchResultItemProps {
-  movie: Movie;
+  movie: MovieDetail;
   onOpenMovie: (id: string) => void;
 }
 

@@ -17,8 +17,6 @@ import {
 } from "@mui/material";
 import {
   Search,
-  Grid as GridIcon,
-  List as ListIcon,
   Star,
   Clock,
   Film,
@@ -29,7 +27,7 @@ import {
 import Navbar from "../components/Navbar";
 import { useWatchlist } from "../hooks/useWatchlist";
 import { useDebouncedValue } from "../hooks/useDebouncedValue";
-import { WatchlistItem } from "../types/movie";
+import type { WatchlistItem } from "../types/movie";
 import { useNavigate } from "react-router-dom";
 
 const WatchlistPage = () => {
