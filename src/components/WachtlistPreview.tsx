@@ -3,9 +3,9 @@ import {
   Box,
   Typography,
   Button,
-  Grid,
   Card,
   CardMedia,
+  GridLegacy as Grid,
 } from '@mui/material';
 import { ChevronRight, Film, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -75,12 +75,12 @@ const WachtlistPreview = () => {
           <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center' }}>
             {previewWatchlist.map((movie) => (
               <Grid
-                key={movie.imdbId}
                 item
-                xs={4}
-                sm={3}
-                md={2.4}
-                lg={1.5}
+                key={movie.imdbId}
+                xs={6}
+                sm={4}
+                md={4}
+                lg={2}
               >
                 <Card
                   onClick={() => handleMovieClick(movie.imdbId)}

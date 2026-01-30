@@ -30,6 +30,7 @@ const MovieDetailModal = ({
   const [movie, setMovie] = useState<MovieDetail | null>(null);
   const [loading, setLoading] = useState(false);
 
+
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -51,6 +52,9 @@ const MovieDetailModal = ({
     movie.Ratings?.find((r) => r.Source === source)?.Value;
 
   if (!open) return null;
+
+  if (loading) return 'Loading...'
+
 
   return (
     <Dialog

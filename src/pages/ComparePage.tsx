@@ -45,6 +45,7 @@ import Navbar from "../components/Navbar";
 import { useComparison } from "../hooks/useComparison";
 import { useMoviePreviews } from "../hooks/useMoviePreviews";
 import SearchResultItem from "../components/SearchResultItem";
+import type { MovieDetail } from '../types/movie';
 
 const radarColors = ["#1976d2", "#9c27b0", "#2e7d32", "#ed6c02", "#6d4c41"];
 
@@ -107,14 +108,14 @@ const ComparePage = () => {
     }
   }, [selectedIds]);
 
-  const ratingChartData = (result?.movies ?? []).map((movie: any) => ({
+  const ratingChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
     name:
       movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
     fullName: movie.Title,
     rating: Number(movie.imdbRating),
   }));
 
-  const metascoreChartData = (result?.movies ?? []).map((movie: any) => ({
+  const metascoreChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
     name:
       movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
     fullName: movie.Title,
@@ -124,7 +125,7 @@ const ComparePage = () => {
         : 0,
   }));
 
-  const boxOfficeChartData = (result?.movies ?? []).map((movie: any) => ({
+  const boxOfficeChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
     name:
       movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
     fullName: movie.Title,
@@ -133,7 +134,7 @@ const ComparePage = () => {
       : 0,
   }));
 
-  const runtimeChartData = (result?.movies ?? []).map((movie: any) => ({
+  const runtimeChartData = (result?.movies ?? []).map((movie: MovieDetail) => ({
     name:
       movie.Title.length > 14 ? movie.Title.slice(0, 14) + "…" : movie.Title,
     fullName: movie.Title,
@@ -147,13 +148,13 @@ const ComparePage = () => {
         {
           metric: "IMDb Rating",
           ...Object.fromEntries(
-            result.movies.map((m: any) => [m.imdbID, Number(m.imdbRating)]),
+            result.movies.map((m: MovieDetail) => [m.imdbID, Number(m.imdbRating)]),
           ),
         },
         {
           metric: "Metascore",
           ...Object.fromEntries(
-            result.movies.map((m: any) => [
+            result.movies.map((m: MovieDetail) => [
               m.imdbID,
               m.Metascore && m.Metascore !== "N/A"
                 ? Number(m.Metascore) / 10
@@ -164,7 +165,7 @@ const ComparePage = () => {
         {
           metric: "Runtime (scaled)",
           ...Object.fromEntries(
-            result.movies.map((m: any) => [
+            result.movies.map((m: MovieDetail) => [
               m.imdbID,
               parseInt(m.Runtime?.replace(" min", "") || "0") / 20,
             ]),
@@ -448,7 +449,7 @@ const ComparePage = () => {
                     </Typography>
                     <Stack spacing={1}>
                       {result.comparison.ratings.highest.Ratings.map(
-                        (rating: any, idx: number) => (
+                        (rating: MovieDetail, idx: number) => (
                           <Box
                             key={idx}
                             sx={{
@@ -535,7 +536,7 @@ const ComparePage = () => {
                     </Typography>
                     <Stack spacing={1}>
                       {result.comparison.ratings.lowest.Ratings.map(
-                        (rating: any, idx: number) => (
+                        (rating: MovieDetail, idx: number) => (
                           <Box
                             key={idx}
                             sx={{
@@ -735,7 +736,7 @@ const ComparePage = () => {
                         <PolarGrid />
                         <PolarAngleAxis dataKey="metric" />
                         <PolarRadiusAxis domain={[0, 10]} />
-                        {result.movies.map((movie: any, index: number) => (
+                        {result.movies.map((movie: MovieDetail, index: number) => (
                           <Radar
                             key={movie.imdbID}
                             name={movie.Title}

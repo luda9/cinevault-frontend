@@ -24,6 +24,8 @@ export interface MovieDetail extends SearchMovie {
   Metascore: string;
   imdbRating: string;
   BoxOffice: string;
+  Source: string;
+  Rating: string;
 }
 
 export type WatchlistItem = {

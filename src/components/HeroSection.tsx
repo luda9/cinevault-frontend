@@ -111,9 +111,6 @@ const HeroSection = () => {
           isOptionEqualToValue={(option, value) =>
             option.imdbID === value.imdbID
           }
-          getOptionLabel={(option) =>
-            typeof option === 'string' ? option : option.Title
-          }
           PaperComponent={(props) => (
             <Paper
               {...props}
