@@ -69,7 +69,7 @@ const RecentComparisons = () => {
 
           <Button
             component={Link}
-            to="/watchlist"
+            to="/compare"
             variant="contained"
             color="primary"
             endIcon={<ChevronRight size={18} />}
