@@ -1,90 +1,85 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Box, Typography, TextField, Autocomplete, Paper } from "@mui/material";
-import { Search, Loader2 } from "lucide-react";
-import heroBg from "../assets/hero-bg.jpg";
-import SearchResultItem from "./SearchResultItem";
-import MovieDetailModal from "./MovieDetailModal";
+import { useState } from 'react'
+import axios from 'axios'
+import {
+  Box,
+  Typography,
+  TextField,
+  Autocomplete,
+  Paper,
+} from '@mui/material';
+import { Search, Loader2 } from 'lucide-react';
+import heroBg from '../assets/hero-bg.jpg';
+import SearchResultItem from './SearchResultItem';
+import MovieDetailModal from './MovieDetailModal'
 
-import type { SearchMovie } from "../types/movie";
+import type { SearchMovie } from '../types/movie';
 
 const HeroSection = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const [moviesTv, setMoviesTv] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [selectedMovieId, setSelectedMovieId] = useState<string>("");
-  const [inputValue, setInputValue] = useState("");
+  const [ moviesTv, setMoviesTv] = useState([])
+  const [ isSearching, setIsSearching] = useState(false)
+  const [selectedMovieId, setSelectedMovieId] = useState<string>('');
 
-  useEffect(() => {
-    if (inputValue.length < 3) {
-      setMoviesTv([]);
-      setIsSearching(false);
-      return;
-    }
+  console.log(moviesTv)
 
-    setIsSearching(true);
+  const searchInputHandler = async (input:string) => {
+    if(input.length === 0) return
 
-    const timeout = setTimeout(async () => {
-      try {
-        const apiResponse = await axios.get(
-          `${apiUrl}api/search?s=${inputValue}`,
-        );
-
-        setMoviesTv(apiResponse.data.Search ?? []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setIsSearching(false);
+    try {
+      const apiResponse = await axios.get(`${apiUrl}api/search?s=${input}`)
+      if(apiResponse.data.Search){
+        setMoviesTv(apiResponse.data.Search)
+        setIsSearching(true)
       }
-    }, 400);
-
-    return () => clearTimeout(timeout);
-  }, [inputValue]);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <Box
       component="section"
       sx={{
-        position: "relative",
-        height: "70vh",
+        position: 'relative',
+        height: '70vh',
         minHeight: 500,
-        width: "100%",
-        overflow: "hidden",
+        width: '100%',
+        overflow: 'hidden',
       }}
     >
       {/* Background */}
       <Box
         sx={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
           backgroundImage: `url(${heroBg})`,
-          backgroundSize: "cover",
+          backgroundSize: 'cover',
         }}
       />
 
       {/* Overlay */}
       <Box
         sx={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
           background:
-            "linear-gradient(to bottom, rgba(11,11,13,0.4), rgba(11,11,13,0.85))",
+            'linear-gradient(to bottom, rgba(11,11,13,0.4), rgba(11,11,13,0.85))',
         }}
       />
 
       {/* Content */}
       <Box
         sx={{
-          position: "relative",
+          position: 'relative',
           zIndex: 1,
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
           px: 2,
-          textAlign: "center",
+          textAlign: 'center',
         }}
       >
         <Typography
@@ -95,10 +90,7 @@ const HeroSection = () => {
           }}
         >
           Discover your next
-          <Box
-            component="span"
-            sx={{ display: "block", color: "primary.main" }}
-          >
+          <Box component="span" sx={{ display: 'block', color: 'primary.main' }}>
             favorite movie
           </Box>
         </Typography>
@@ -107,7 +99,7 @@ const HeroSection = () => {
           sx={{
             mb: 4,
             maxWidth: 720,
-            color: "text.secondary",
+            color: 'text.secondary',
             fontSize: { xs: 16, md: 20 },
           }}
         >
@@ -118,7 +110,7 @@ const HeroSection = () => {
         <Autocomplete<SearchMovie>
           disableCloseOnSelect
           options={moviesTv}
-          onInputChange={(_, value) => setInputValue(value)}
+          getOptionLabel={(option) => option.Title}
           isOptionEqualToValue={(option, value) =>
             option.imdbID === value.imdbID
           }
@@ -127,8 +119,8 @@ const HeroSection = () => {
               {...props}
               sx={{
                 mt: 1,
-                backgroundColor: "background.paper",
-                border: "1px solid rgba(255,255,255,0.08)",
+                backgroundColor: 'background.paper',
+                border: '1px solid rgba(255,255,255,0.08)',
               }}
             />
           )}
@@ -136,7 +128,11 @@ const HeroSection = () => {
             const { key, ...rest } = props;
 
             return (
-              <Box component="li" key={key} {...rest}>
+              <Box
+                component="li"
+                key={key}
+                {...rest}
+              >
                 <SearchResultItem
                   movie={option}
                   onOpenMovie={(id) => setSelectedMovieId(id)}
@@ -148,25 +144,22 @@ const HeroSection = () => {
             <TextField
               {...params}
               placeholder="Search movies, series..."
+              onChange={(e) => searchInputHandler(e.target.value)}
               InputProps={{
                 ...params.InputProps,
                 startAdornment: (
                   <>
                     {isSearching ? (
-                      <Loader2
-                        style={{ marginLeft: "10px" }}
-                        size={20}
-                        className="animate-spin"
-                      />
+                      <Loader2 style={{ marginLeft: "10px"}} size={20} className="animate-spin" />
                     ) : (
-                      <Search style={{ marginLeft: "10px" }} size={20} />
+                      <Search style={{ marginLeft: "10px"}} size={20} />
                     )}
                     {params.InputProps.startAdornment}
                   </>
                 ),
               }}
               sx={{
-                "& .MuiOutlinedInput-root": {
+                '& .MuiOutlinedInput-root': {
                   height: 56,
                   borderRadius: 999,
                   fontSize: 18,
@@ -176,7 +169,7 @@ const HeroSection = () => {
             />
           )}
           sx={{
-            width: "100%",
+            width: '100%',
             maxWidth: 520,
           }}
         />
@@ -184,7 +177,7 @@ const HeroSection = () => {
       <MovieDetailModal
         movieId={selectedMovieId}
         open={Boolean(selectedMovieId)}
-        onClose={() => setSelectedMovieId("")}
+        onClose={() => setSelectedMovieId('')}
       />
     </Box>
   );
