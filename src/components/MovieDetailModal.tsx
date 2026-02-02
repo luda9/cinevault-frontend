@@ -199,7 +199,7 @@ const MovieDetailModal = ({
               </Box>
 
               {/* Ratings */}
-              <Box display="flex" gap={4} alignItems="center" mb={3}>
+              <Box display="flex" flexWrap="wrap" gap={4} alignItems="center" mb={3}>
                 {movie.imdbRating && (
                   <Box display="flex" alignItems="center" gap={1}>
                     <Star size={18} fill="#f5c518" />
