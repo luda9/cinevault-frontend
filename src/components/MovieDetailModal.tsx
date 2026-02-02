@@ -14,6 +14,7 @@ import {
 import { Heart, Star, Film, ArrowLeftRight, X } from "lucide-react";
 import type { MovieDetail } from "../types/movie";
 import { useWatchlist } from "../hooks/useWatchlist";
+import { useNavigate } from "react-router-dom";
 
 interface MovieDetailModalProps {
   open: boolean;
@@ -29,9 +30,9 @@ const MovieDetailModal = ({
   const { toggleWatchlist, isInWatchlist, updateWatchlistItem, isWatched } = useWatchlist();
   const [movie, setMovie] = useState<MovieDetail | null>(null);
   const [loading, setLoading] = useState(false);
-
-
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!open || !movieId) return;
@@ -50,6 +51,14 @@ const MovieDetailModal = ({
 
   const getRating = (movie: MovieDetail, source: string) =>
     movie.Ratings?.find((r) => r.Source === source)?.Value;
+
+  const handleCompare = (imdbId: string) => {
+    navigate("/compare", {
+      state: {
+        initialIds: [imdbId],
+      },
+    });
+  };
 
   if (!open) return null;
 
@@ -165,6 +174,7 @@ const MovieDetailModal = ({
                   fullWidth
                   variant="outlined"
                   startIcon={<ArrowLeftRight size={16} />}
+                  onClick={() => handleCompare(movie.imdbID)}
                   sx={{
                     textTransform: "none",
                     color: "#fff",

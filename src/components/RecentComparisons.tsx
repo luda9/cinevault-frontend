@@ -182,7 +182,7 @@ const RecentComparisons = () => {
                     sx={{
                       minWidth: CARD_WIDTH,
                       p: 1.5,
-                      borderRadius: 3,
+                      borderRadius: 2,
                       textDecoration: "none",
                       color: "inherit",
                       flexShrink: 0,
